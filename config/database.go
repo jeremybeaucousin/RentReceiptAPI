@@ -26,7 +26,7 @@ func DatabaseInit() {
 		databaseUrl = os.Getenv("DATABASE_URL")
 	}
 
-	db, err = sql.Open("postgres", databaseUrl+"?sslmode=disable")
+	db, err = sql.Open("postgres", databaseUrl)
 
 	if err != nil {
 		log.Fatal(err)

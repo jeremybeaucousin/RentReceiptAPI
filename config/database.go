@@ -3,7 +3,9 @@ package config
 import (
 	"database/sql"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -12,7 +14,19 @@ var db *sql.DB
 func DatabaseInit() {
 	var err error
 
-	db, err = sql.Open("postgres", "user=rentReceiptGenerator password=Jonathan dbname=rentReceiptGenerator port=5433 sslmode=disable")
+	var databaseUrl string
+	databaseUrl = os.Getenv("DATABASE_URL")
+	if len(databaseUrl) == 0 {
+		err := godotenv.Load()
+
+		if err != nil {
+			log.Fatalf("Error loading .env file")
+		}
+
+		databaseUrl = os.Getenv("DATABASE_URL")
+	}
+
+	db, err = sql.Open("postgres", databaseUrl+"?sslmode=disable")
 
 	if err != nil {
 		log.Fatal(err)

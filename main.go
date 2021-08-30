@@ -16,5 +16,6 @@ func main() {
 	if len(port) == 0 {
 		port = "8080"
 	}
+	log.Printf("Used port is %s", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }

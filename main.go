@@ -6,16 +6,27 @@ import (
 	"os"
 
 	"github.com/jeremybeaucousin/RentReceiptAPI/config"
+	"github.com/rs/cors"
 )
 
 func main() {
 	config.DatabaseInit()
 	router := InitializeRouter()
+
 	var port string
 	port = os.Getenv("PORT")
 	if len(port) == 0 {
 		port = "8080"
 	}
 	log.Printf("Used port is %s", port)
-	log.Fatal(http.ListenAndServe(":"+port, router))
+	log.Printf("Origin active is %s", os.Getenv("ORIGIN_RENT_REICEIPT_GENERATOR"))
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{os.Getenv("ORIGIN_RENT_REICEIPT_GENERATOR")},
+		AllowCredentials: true,
+	})
+
+	handler := c.Handler(router)
+
+	log.Fatal(http.ListenAndServe(":"+port, handler))
 }

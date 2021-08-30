@@ -1,20 +1,22 @@
 package controllers
 
 import (
-  "encoding/json"
-  "github.com/gorilla/mux"
-  "github.com/synbioz/go_api/models"
-  "io/ioutil"
-  "log"
-  "net/http"
-  "strconv"
+	"encoding/json"
+
+	"github.com/gorilla/mux"
+	"github.com/jeremybeaucousin/RentReceiptAPI/models"
+
+	"io/ioutil"
+	"log"
+	"net/http"
+	"strconv"
 )
 
 func UsersIndex(w http.ResponseWriter, r *http.Request) {
-  w.Header().Set("Content-type", "application/json;charset=UTF-8")
-  w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-type", "application/json;charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
 
-  json.NewEncoder(w).Encode(models.AllUsers())
+	json.NewEncoder(w).Encode(models.AllUsers())
 }
 
 func UsersCreate(w http.ResponseWriter, r *http.Request) {
@@ -35,14 +37,13 @@ func UsersCreate(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(error)
 	}
 
-	models.NewUser(&user)
+	savedUser := models.NewUser(&user)
 
-	json.NewEncoder(w).Encode(user)
+	json.NewEncoder(w).Encode(savedUser)
 }
 
 func UsersShow(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
 
 	vars := mux.Vars(r)
 	id, error := strconv.Atoi(vars["id"])
@@ -53,7 +54,13 @@ func UsersShow(w http.ResponseWriter, r *http.Request) {
 
 	user := models.FindUserById(id)
 
-	json.NewEncoder(w).Encode(user)
+	if user == nil {
+		w.WriteHeader(http.StatusNotFound)
+	} else {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(user)
+	}
+
 }
 
 func UsersUpdate(w http.ResponseWriter, r *http.Request) {
@@ -67,7 +74,7 @@ func UsersUpdate(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(error)
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, error := ioutil.ReadAll(r.Body)
 
 	if error != nil {
 		log.Fatal(error)
@@ -95,5 +102,5 @@ func UsersDelete(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(error)
 	}
 
-	error = models.DeleteUserById(id)
+	models.DeleteUserById(id)
 }

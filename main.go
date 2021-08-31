@@ -6,12 +6,16 @@ import (
 	"os"
 
 	"github.com/jeremybeaucousin/RentReceiptAPI/config"
+	"github.com/jeremybeaucousin/RentReceiptAPI/models"
 	"github.com/rs/cors"
 )
 
 func main() {
 	config.DatabaseInit()
+	config.GormDatabaseInit()
 	router := InitializeRouter()
+
+	config.GormDb().AutoMigrate(&models.Owner{})
 
 	var port string
 	port = os.Getenv("PORT")

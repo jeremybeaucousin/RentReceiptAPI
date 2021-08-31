@@ -7,8 +7,11 @@
 Initiate package
 > go mod init github.com/jeremybeaucousin/RentReceiptAPI
 
-Download dependencies
+## Download dependencies
 > go get
+
+## remove dependencies
+> go get github.com/lib/pq@none
 
 ## Update package
 > go get -u all

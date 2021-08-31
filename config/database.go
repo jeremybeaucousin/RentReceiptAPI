@@ -13,7 +13,6 @@ var db *sql.DB
 
 func DatabaseInit() {
 	var err error
-
 	var databaseUrl string
 	databaseUrl = os.Getenv("DATABASE_URL")
 	if len(databaseUrl) == 0 {

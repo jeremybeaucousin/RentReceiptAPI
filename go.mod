@@ -37,3 +37,11 @@ require (
 	gorm.io/driver/postgres v1.1.0
 	gorm.io/gorm v1.21.14
 )
+
+require (
+	github.com/jackc/pgconn v1.10.0 // indirect
+	github.com/jackc/pgio v1.0.0 // indirect
+	github.com/jackc/pgtype v1.8.1 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.2 // indirect
+)

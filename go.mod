@@ -1,6 +1,7 @@
 module github.com/jeremybeaucousin/RentReceiptAPI
 
-go 1.14
+// +heroku goVersion go1.16
+go 1.17
 
 require (
 	github.com/Masterminds/semver/v3 v3.1.1 // indirect

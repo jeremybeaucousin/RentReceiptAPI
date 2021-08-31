@@ -75,6 +75,7 @@ func OwnersUpdate(w http.ResponseWriter, r *http.Request) {
 	} else {
 		body, error := ioutil.ReadAll(r.Body)
 		error = json.Unmarshal(body, &owner)
+		log.Print(owner)
 		models.UpdateOwner(owner)
 		json.NewEncoder(w).Encode(owner)
 		w.WriteHeader(http.StatusOK)
@@ -103,8 +104,8 @@ func OwnersDelete(w http.ResponseWriter, r *http.Request) {
 	if owner == nil {
 		w.WriteHeader(http.StatusNotFound)
 	} else {
-		models.DeleteOwnerById(id)
-		json.NewEncoder(w).Encode(owner)
+		models.DeleteOwnerById(owner)
 		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(owner)
 	}
 }

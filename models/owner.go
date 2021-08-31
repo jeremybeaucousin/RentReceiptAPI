@@ -13,7 +13,7 @@ type Owner struct {
 	FirstName  string     `json:"firstname"`
 	LastName   string     `json:"lastname"`
 	Adress     string     `json:"adress"`
-	Properties []Property `json:"properties" gorm:"foreignKey:OwnerRefer;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Properties []Property `json:"properties" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:OwnerRefer;"`
 }
 
 func NewOwner(owner *Owner) *Owner {
@@ -46,14 +46,13 @@ func AllOwners() *[]Owner {
 }
 
 func UpdateOwner(owner *Owner) {
-	config.GormDb().Model(&owner).Preload("Properties").Updates(owner)
+	config.GormDb().Session(&gorm.Session{FullSaveAssociations: true}).Save(&owner)
 }
 
-func DeleteOwnerById(id int) *Owner {
-	var owner Owner
-	result := config.GormDb().Preload("Properties").Delete(&owner, id)
+func DeleteOwnerById(owner *Owner) *Owner {
+	result := config.GormDb().Select("Properties").Delete(&owner)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &owner
+	return owner
 }

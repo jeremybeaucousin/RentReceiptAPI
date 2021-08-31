@@ -65,33 +65,30 @@ func OwnersShow(w http.ResponseWriter, r *http.Request) {
 
 func OwnersUpdate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
 
 	vars := mux.Vars(r)
 	id, error := strconv.Atoi(vars["id"])
 
-	if error != nil {
-		log.Fatal(error)
-	}
-
-	body, error := ioutil.ReadAll(r.Body)
-
-	if error != nil {
-		log.Fatal(error)
-	}
-
 	owner := models.FindOwnerById(id)
-
-	error = json.Unmarshal(body, &owner)
-
-	models.UpdateOwner(owner)
-
-	json.NewEncoder(w).Encode(owner)
+	if owner == nil {
+		w.WriteHeader(http.StatusNotFound)
+	} else {
+		body, error := ioutil.ReadAll(r.Body)
+		error = json.Unmarshal(body, &owner)
+		models.UpdateOwner(owner)
+		json.NewEncoder(w).Encode(owner)
+		w.WriteHeader(http.StatusOK)
+		if error != nil {
+			log.Fatal(error)
+		}
+	}
+	if error != nil {
+		log.Fatal(error)
+	}
 }
 
 func OwnersDelete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
 
 	vars := mux.Vars(r)
 
@@ -101,6 +98,13 @@ func OwnersDelete(w http.ResponseWriter, r *http.Request) {
 	if error != nil {
 		log.Fatal(error)
 	}
+	owner := models.FindOwnerById(id)
 
-	models.DeleteOwnerById(id)
+	if owner == nil {
+		w.WriteHeader(http.StatusNotFound)
+	} else {
+		models.DeleteOwnerById(id)
+		json.NewEncoder(w).Encode(owner)
+		w.WriteHeader(http.StatusOK)
+	}
 }

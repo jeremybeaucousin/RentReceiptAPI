@@ -13,9 +13,9 @@ import (
 func main() {
 	config.DatabaseInit()
 	config.GormDatabaseInit()
-	router := InitializeRouter()
-
 	config.GormDb().AutoMigrate(&models.Owner{})
+
+	router := InitializeRouter()
 
 	var port string
 	port = os.Getenv("PORT")

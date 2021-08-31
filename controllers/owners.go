@@ -75,7 +75,6 @@ func OwnersUpdate(w http.ResponseWriter, r *http.Request) {
 	} else {
 		body, error := ioutil.ReadAll(r.Body)
 		error = json.Unmarshal(body, &owner)
-		log.Print(owner)
 		models.UpdateOwner(owner)
 		json.NewEncoder(w).Encode(owner)
 		w.WriteHeader(http.StatusOK)

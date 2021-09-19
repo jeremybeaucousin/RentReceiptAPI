@@ -41,6 +41,7 @@ func FindTenantById(id int) *Tenant {
 func AllTenants() *[]Tenant {
 	var tenants []Tenant
 
+	config.GormDb().Find(&tenants)
 	return &tenants
 }
 

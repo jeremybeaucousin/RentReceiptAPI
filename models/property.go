@@ -16,20 +16,21 @@ type Property struct {
 	OwnerRefer uint   `json:"owner"`
 }
 
-func NewProperty(property *Property) *Property {
+func NewProperty(ownerId int, property *Property) *Property {
 	if property == nil {
 		log.Fatal(property)
 	}
+	property.OwnerRefer = uint(ownerId)
 
 	config.GormDb().Create(&property)
 
 	return property
 }
 
-func FindPropertyById(id int) *Property {
+func FindPropertyById(ownerId int, id int) *Property {
 	var property Property
 
-	result := config.GormDb().First(&property, "id = ?", id)
+	result := config.GormDb().Preload("Tenant").First(&property, "owner_refer = ? AND id = ?", ownerId, id)
 
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
@@ -38,10 +39,10 @@ func FindPropertyById(id int) *Property {
 	return &property
 }
 
-func AllPropertys() *[]Property {
+func AllProperties(ownerId int) *[]Property {
 	var propertys []Property
 
-	config.GormDb().Find(&propertys)
+	config.GormDb().Preload("Tenant").Where("owner_refer = ?", ownerId).Find(&propertys)
 	return &propertys
 }
 
@@ -50,7 +51,7 @@ func UpdateProperty(property *Property) {
 }
 
 func DeletePropertyById(property *Property) *Property {
-	result := config.GormDb().Delete(&property)
+	result := config.GormDb().Select("Tenant").Delete(&property)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}

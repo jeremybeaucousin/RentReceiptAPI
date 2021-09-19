@@ -13,7 +13,7 @@ import (
 func main() {
 	config.DatabaseInit()
 	config.GormDatabaseInit()
-	config.GormDb().AutoMigrate(&models.Owner{}, &models.Property{})
+	config.GormDb().AutoMigrate(&models.Owner{}, &models.Tenant{}, &models.Property{})
 
 	router := InitializeRouter()
 

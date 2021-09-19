@@ -16,20 +16,20 @@ type Tenant struct {
 	PropertyRefer uint   `json:"property"`
 }
 
-func NewTenant(tenant *Tenant) *Tenant {
+func NewTenant(propertyId int, tenant *Tenant) *Tenant {
 	if tenant == nil {
 		log.Fatal(tenant)
 	}
-
+	tenant.PropertyRefer = uint(propertyId)
 	config.GormDb().Create(&tenant)
 
 	return tenant
 }
 
-func FindTenantById(id int) *Tenant {
+func FindTenantById(propertyId int, id int) *Tenant {
 	var tenant Tenant
 
-	result := config.GormDb().First(&tenant, "id = ?", id)
+	result := config.GormDb().First(&tenant, "property_refer = ? AND id = ?", propertyId, id)
 
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
@@ -38,10 +38,10 @@ func FindTenantById(id int) *Tenant {
 	return &tenant
 }
 
-func AllTenants() *[]Tenant {
+func AllTenants(propertyId int) *[]Tenant {
 	var tenants []Tenant
 
-	config.GormDb().Find(&tenants)
+	config.GormDb().Where("property_refer = ?", propertyId).Find(&tenants)
 	return &tenants
 }
 

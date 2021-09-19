@@ -12,21 +12,13 @@ import (
 	"strconv"
 )
 
-func getOwnerId(r *http.Request) int {
-	vars := mux.Vars(r)
-	ownerId, error := strconv.Atoi(vars["ownerId"])
-
-	if error != nil {
-		log.Fatal(error)
-	}
-	return ownerId
-}
+const propertyIdKey string = "propertyId"
 
 func PropertiesIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 
-	ownerId := getOwnerId(r)
+	ownerId := getQueryVar(r, ownerIdKey)
 
 	json.NewEncoder(w).Encode(models.AllProperties(ownerId))
 }
@@ -35,7 +27,7 @@ func PropertiesCreate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 
-	ownerId := getOwnerId(r)
+	ownerId := getQueryVar(r, ownerIdKey)
 
 	body, error := ioutil.ReadAll(r.Body)
 
@@ -59,7 +51,7 @@ func PropertiesCreate(w http.ResponseWriter, r *http.Request) {
 func PropertiesShow(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
 
-	ownerId := getOwnerId(r)
+	ownerId := getQueryVar(r, ownerIdKey)
 
 	vars := mux.Vars(r)
 	id, error := strconv.Atoi(vars["id"])
@@ -82,7 +74,7 @@ func PropertiesShow(w http.ResponseWriter, r *http.Request) {
 func PropertiesUpdate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
 
-	ownerId := getOwnerId(r)
+	ownerId := getQueryVar(r, ownerIdKey)
 
 	vars := mux.Vars(r)
 	id, error := strconv.Atoi(vars["id"])
@@ -108,7 +100,7 @@ func PropertiesUpdate(w http.ResponseWriter, r *http.Request) {
 func PropertiesDelete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
 
-	ownerId := getOwnerId(r)
+	ownerId := getQueryVar(r, ownerIdKey)
 
 	vars := mux.Vars(r)
 

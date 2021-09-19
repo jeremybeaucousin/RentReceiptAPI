@@ -15,11 +15,11 @@ func InitializeRouter() *mux.Router {
 	router.Methods("PUT").Path("/users/{id}").HandlerFunc(controllers.UsersUpdate)
 	router.Methods("DELETE").Path("/users/{id}").HandlerFunc(controllers.UsersDelete)
 
-	router.Methods("GET").Path("/owners/properties/tenants").HandlerFunc(controllers.TenantsIndex)
-	router.Methods("POST").Path("/owners/properties/tenants").HandlerFunc(controllers.TenantsCreate)
-	router.Methods("GET").Path("/owners/properties/tenants/{id}").HandlerFunc(controllers.TenantsShow)
-	router.Methods("PUT").Path("/owners/properties/tenants/{id}").HandlerFunc(controllers.TenantsUpdate)
-	router.Methods("DELETE").Path("/owners/properties/tenants/{id}").HandlerFunc(controllers.TenantsDelete)
+	router.Methods("GET").Path("/owners/{ownerId}/properties/{propertyId}/tenants").HandlerFunc(controllers.TenantsIndex)
+	router.Methods("POST").Path("/owners/{ownerId}/properties/{propertyId}/tenants").HandlerFunc(controllers.TenantsCreate)
+	router.Methods("GET").Path("/owners/{ownerId}/properties/{propertyId}/tenants/{id}").HandlerFunc(controllers.TenantsShow)
+	router.Methods("PUT").Path("/owners/{ownerId}/properties/{propertyId}/tenants/{id}").HandlerFunc(controllers.TenantsUpdate)
+	router.Methods("DELETE").Path("/owners/{ownerId}/properties/{propertyId}/tenants/{id}").HandlerFunc(controllers.TenantsDelete)
 
 	router.Methods("GET").Path("/owners/{ownerId}/properties").HandlerFunc(controllers.PropertiesIndex)
 	router.Methods("POST").Path("/owners/{ownerId}/properties").HandlerFunc(controllers.PropertiesCreate)

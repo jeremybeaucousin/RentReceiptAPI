@@ -12,6 +12,8 @@ import (
 	"strconv"
 )
 
+const ownerIdKey string = "ownerId"
+
 func OwnersIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
 	w.WriteHeader(http.StatusOK)

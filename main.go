@@ -27,6 +27,7 @@ func main() {
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{os.Getenv("ORIGIN_RENT_REICEIPT_GENERATOR")},
+		AllowedMethods:   []string{"GET", "POST", "DELETE", "PUT"},
 		AllowCredentials: true,
 	})
 

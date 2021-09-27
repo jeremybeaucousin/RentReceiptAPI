@@ -12,6 +12,8 @@ type Property struct {
 	gorm.Model
 	Name       string `json:"name"`
 	Adress     string `json:"adress"`
+	Rent       int    `json:"rent"`
+	Charges    int    `json:"charges"`
 	Tenant     Tenant `json:"tenant" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:PropertyRefer;"`
 	OwnerRefer uint   `json:"owner"`
 }

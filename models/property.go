@@ -10,12 +10,12 @@ import (
 
 type Property struct {
 	gorm.Model
-	Name       string  `json:"name"`
-	Adress     string  `json:"adress"`
-	Rent       float32 `json:"rent"`
-	Charges    float32 `json:"charges"`
-	Tenant     Tenant  `json:"tenant" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:PropertyRefer;"`
-	OwnerRefer uint    `json:"owner"`
+	Name       string   `json:"name"`
+	Adress     string   `json:"adress"`
+	Rent       float32  `json:"rent"`
+	Charges    float32  `json:"charges"`
+	Tenant     []Tenant `json:"tenants" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:PropertyRefer;"`
+	OwnerRefer uint     `json:"owner"`
 }
 
 func NewProperty(ownerId int, property *Property) *Property {

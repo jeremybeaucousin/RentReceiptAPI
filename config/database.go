@@ -1,19 +1,20 @@
 package config
 
 import (
-	"database/sql"
 	"log"
 	"os"
 
 	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-var db *sql.DB
+var gormDb *gorm.DB
 
-func DatabaseInit() {
+func GormDatabaseInit() {
 	var err error
 	var databaseUrl string
+
 	databaseUrl = os.Getenv("DATABASE_URL")
 	if len(databaseUrl) == 0 {
 		err := godotenv.Load()
@@ -24,26 +25,13 @@ func DatabaseInit() {
 
 		databaseUrl = os.Getenv("DATABASE_URL")
 	}
-
-	db, err = sql.Open("postgres", databaseUrl)
-
+	gormDb, err = gorm.Open(postgres.Open(databaseUrl), &gorm.Config{})
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Create Table cars if not exists
-	createUsersTable()
-}
-
-func createUsersTable() {
-	_, err := db.Exec("CREATE TABLE IF NOT EXISTS users(id serial, email text not null, firstname varchar(20) not null, lastname varchar(20) not null, constraint pk primary key(id))")
-
-	if err != nil {
-		log.Fatal(err)
+		panic("failed to connect database")
 	}
 }
 
 // Getter for db var
-func Db() *sql.DB {
-	return db
+func GormDb() *gorm.DB {
+	return gormDb
 }

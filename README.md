@@ -18,3 +18,6 @@ Initiate package
 
 # Run app
 > go run .
+
+# Google cloud
+> gcloud run deploy

@@ -6,7 +6,6 @@ ADD . /app
 
 WORKDIR /app
 
-RUN apk update && apk add git
 RUN go build -o main .
 
 CMD ["/app/main"]

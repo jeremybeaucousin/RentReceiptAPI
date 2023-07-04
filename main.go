@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/jeremybeaucousin/RentReceiptAPI/config"
 	"github.com/jeremybeaucousin/RentReceiptAPI/models"
@@ -19,13 +20,14 @@ func main() {
 	var port string
 	port = os.Getenv("PORT")
 	if len(port) == 0 {
-		port = "8080"
+		port = "8081"
 	}
 	log.Printf("Used port is %s", port)
-	log.Printf("Origin active is %s", os.Getenv("ORIGIN_RENT_REICEIPT_GENERATOR"))
+	allowedOrigins := strings.Split(os.Getenv("ORIGIN_RENT_REICEIPT_GENERATOR"), ",")
+	log.Printf("Origins active is %s", allowedOrigins)
 
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{os.Getenv("ORIGIN_RENT_REICEIPT_GENERATOR")},
+		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "PUT"},
 		AllowCredentials: true,
 	})

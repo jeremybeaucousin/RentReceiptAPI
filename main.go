@@ -20,7 +20,7 @@ func main() {
 	var port string
 	port = os.Getenv("PORT")
 	if len(port) == 0 {
-		port = "8081"
+		port = "8080"
 	}
 	log.Printf("Used port is %s", port)
 	allowedOrigins := strings.Split(os.Getenv("ORIGIN_RENT_REICEIPT_GENERATOR"), ",")

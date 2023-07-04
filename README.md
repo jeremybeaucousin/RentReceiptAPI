@@ -21,3 +21,7 @@ Initiate package
 
 # Google cloud
 > gcloud run deploy
+
+## Run with cloud db
+> docker run -d -e GOOGLE_APPLICATION_CREDENTIALS=./rent-reiceipt-generator-4e7e69f5f82c.json -e INSTANCE_CONNECTION_NAME='rent-reiceipt-generator:europe-west9:rent-receipt-generator-db' -e DB_NAME='rentReceiptGenerator' -e DB_USER='rentReceiptGenerator' -e DB_PASS='rentReceiptGenerator' -e ORIGIN_RENT_REICEIPT_GENERATOR=http://localhost:3000 --name api_test --rm -p 8081:8080 api:test
+a68c3144a58b3a349cff2fbc9bddcc3c4425eb0bd2f64c142ec0723d77bd7d51
